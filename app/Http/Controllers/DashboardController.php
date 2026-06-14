@@ -37,14 +37,18 @@ class DashboardController extends Controller
 
             $stats = [
                 'total' => $submissions->count(),
-                'pending' => $submissions->whereIn('status', ['pending', 'submitted'])->count(),
-                'approved' => $submissions->where('status', 'approved')->count(),
+                'pending' => $submissions->where('status', 'pending')->count(),
+                'approved' => $submissions->whereIn('status', ['approved', 'available'])->count(),
                 'rejected' => $submissions->where('status', 'rejected')->count(),
             ];
 
-            $recent = $submissions->take(5);
+            $recent = LetterSubmission::with(['student', 'letterType'])
+                ->where('is_read', false)
+                ->latest();
+            $unreadCount = $recent->count();
+            $recent = $recent->take(6)->get();
 
-            return view('dashboard.kaprodi', compact('stats', 'recent'));
+            return view('dashboard.kaprodi', compact('stats', 'recent', 'unreadCount'));
 
         } elseif ($user->role === 'tata_usaha') {
 
