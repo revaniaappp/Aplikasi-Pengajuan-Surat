@@ -37,10 +37,10 @@
                             class="btn btn-sm {{ request('status') === 'pending' ? 'btn-warning' : 'btn-light' }}">
                             Menunggu
                         </a>
-                        {{-- <a href="{{ route('mahasiswa.submissions.index', ['status' => 'approved']) }}"
+                        <a href="{{ route('mahasiswa.submissions.index', ['status' => 'approved']) }}"
                             class="btn btn-sm {{ request('status') === 'approved' ? 'btn-success' : 'btn-light' }}">
                             Disetujui
-                        </a> --}}
+                        </a>
                         <a href="{{ route('mahasiswa.submissions.index', ['status' => 'available']) }}"
                             class="btn btn-sm {{ request('status') === 'available' ? 'btn-primary' : 'btn-light' }}">
                             Tersedia
@@ -101,7 +101,15 @@
                                                 Detail
                                             </a>
 
-                                            @if ($item->status === 'available')
+                                            @if ($item->status === 'pending')
+                                                <form action="{{ route('mahasiswa.submissions.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengajuan ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash"></i> Delete
+                                                    </button>
+                                                </form>
+                                            @elseif ($item->status === 'available')
                                                 <a href="{{ route('mahasiswa.submissions.download', $item) }}"
                                                     class="btn btn-sm btn-success">
                                                     <i class="bi bi-download"></i> Download
@@ -111,16 +119,26 @@
                                     </td>
                                 </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted py-5">
-                                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-                                            Belum ada pengajuan surat.
-                                            <a href="{{ route('mahasiswa.submissions.create') }}" class="d-block mt-2">
-                                                Ajukan sekarang
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforelse
+    <tr>
+        <td colspan="6" class="text-center text-muted py-5">
+            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+            
+            @if(!request('status'))
+                Belum ada pengajuan surat.
+                <a href="{{ route('mahasiswa.submissions.create') }}" class="d-block mt-2">
+                    Ajukan sekarang
+                </a>
+            @else
+                Tidak ada pengajuan surat untuk status ini.
+            
+                <a href="{{ route('mahasiswa.submissions.index') }}" class="d-block mt-2 text-decoration-none">
+                    <i class="bi bi-arrow-left"></i> Lihat Semua Pengajuan
+                </a>
+            @endif
+            
+        </td>
+    </tr>
+@endforelse
                             </tbody>
                         </table>
                     </div>

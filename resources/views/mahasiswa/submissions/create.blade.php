@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="p-3">
-                            <form action="{{ route('mahasiswa.submissions.store') }}" method="POST">
+                            <form id="form-pengajuan" action="{{ route('mahasiswa.submissions.store') }}" method="POST">
                                 @csrf
 
                                 {{-- jenis surat dari DB --}}
@@ -65,7 +65,8 @@
                                            class="form-control @error('keperluan') is-invalid @enderror"
                                            name="keperluan"
                                            value="{{ old('keperluan') }}"
-                                           placeholder="contoh: Pembaruan data BPJS, Beasiswa KIP, dll">
+                                           placeholder="contoh: Pembaruan data BPJS, Beasiswa KIP, dll"
+                                           required>
                                     <div class="form-text">Tulis keperluan pengajuan surat ini.</div>
                                     @error('keperluan')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -80,7 +81,8 @@
                                                class="form-control @error('nama_mk') is-invalid @enderror"
                                                name="nama_mk"
                                                value="{{ old('nama_mk') }}"
-                                               placeholder="contoh: Perancangan Basis Data">
+                                               placeholder="contoh: Perancangan Basis Data (SIB010202373)"
+                                               required>
                                         @error('nama_mk')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -91,45 +93,84 @@
                                                class="form-control @error('nama_perusahaan') is-invalid @enderror"
                                                name="nama_perusahaan"
                                                value="{{ old('nama_perusahaan') }}"
-                                               placeholder="contoh: PT Daya Adicipta Motora">
+                                               placeholder="contoh: PT Daya Adicipta Motora"
+                                               required>
                                         @error('nama_perusahaan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    {{-- sher --}}
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Nama / Posisi Penerima Surat</label>
+                                        <input type="text"
+                                               class="form-control @error('nama_penerima') is-invalid @enderror"
+                                               name="nama_penerima"
+                                               value="{{ old('nama_penerima') }}"
+                                               placeholder="contoh: Kepala Divisi Motorcycle Sales Marketing and Logistic"
+                                               required>
+                                        @error('nama_penerima')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Lokasi Perusahaan</label>
+                                        <input type="text"
+                                               class="form-control @error('lokasi_perusahaan') is-invalid @enderror"
+                                               name="lokasi_perusahaan"
+                                               value="{{ old('lokasi_perusahaan') }}"
+                                               placeholder="contoh: Bandung, Jakarta, Surabaya"
+                                               required>
+                                        @error('lokasi_perusahaan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                
                                     <div class="mb-4">
                                         <label class="form-label fw-semibold">Anggota Kelompok</label>
                                         <div id="anggota-list">
                                             <div class="input-group mb-2">
-                                                <input type="text" class="form-control" name="anggota[]"
-                                                    placeholder="Nama anggota 1">
-                                                <input type="text" class="form-control" name="nrp_anggota[]"
-                                                    placeholder="NRP">
-                                            </div>
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" name="anggota[]"
-                                                    placeholder="Nama anggota 2">
-                                                <input type="text" class="form-control" name="nrp_anggota[]"
-                                                    placeholder="NRP">
+                                                <input type="text" class="form-control" name="anggota[]" placeholder="Nama anggota 1" required>
+                                                <input type="number" class="form-control" name="nrp_anggota[]" placeholder="NRP" required>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm mt-1"
-                                            onclick="tambahAnggota()">
+                                        
+                                        {{-- Container untuk memunculkan pesan error duplikat --}}
+                                        <div id="anggota-error" class="text-danger small mb-2 d-none">
+                                            <i class="bi bi-exclamation-circle"></i> <span id="error-text"></span>
+                                        </div>
+
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mt-1" onclick="tambahAnggota()">
                                             <i class="bi bi-plus"></i> Tambah Anggota
                                         </button>
                                     </div>
+                                    
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Tujuan Surat</label>
+                                        <input type="text"
+                                               class="form-control @error('tujuan_surat') is-invalid @enderror"
+                                               name="tujuan_surat"
+                                               value="{{ old('tujuan_surat') }}"
+                                               placeholder="contoh: mengambil informasi berupa SOP proses perusahaan"
+                                               required>
+                                        @error('tujuan_surat')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    {{-- sher end --}}
                                 </div>
 
                                 {{-- field tambahan: surat lulus (id=3) --}}
-                                <div id="fields-3" class="extra-fields d-none mb-4">
+                                {{-- <div id="fields-3" class="extra-fields d-none mb-4">
                                     <label class="form-label fw-semibold">Tanggal Lulus</label>
                                     <input type="date"
                                            class="form-control @error('tanggal_lulus') is-invalid @enderror"
                                            name="tanggal_lulus"
-                                           value="{{ old('tanggal_lulus') }}">
+                                           value="{{ old('tanggal_lulus') }}"
+                                           required>
                                     @error('tanggal_lulus')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                </div>
+                                </div> --}}
 
                                 {{-- tombol submit --}}
                                 <div class="d-flex gap-2 justify-content-end border-top pt-3 mt-2">
@@ -202,13 +243,26 @@
             </div>
         </div>
     </main>
-
+@endsection
+@section('JavaScript')
     <script>
         function showExtraFields(val) {
-            document.querySelectorAll('.extra-fields').forEach(el => el.classList.add('d-none'));
+            document.querySelectorAll('.extra-fields').forEach(el => {
+            el.classList.add('d-none');
+            
+                el.querySelectorAll('input, select, textarea').forEach(input => {
+                    input.disabled = true;
+                });
+            });
             if (val) {
                 const target = document.getElementById('fields-' + val);
-                if (target) target.classList.remove('d-none');
+                if (target) {
+                    target.classList.remove('d-none');
+                    
+                    target.querySelectorAll('input, select, textarea').forEach(input => {
+                        input.disabled = false;
+                    });
+                }
             }
         }
 
@@ -217,8 +271,8 @@
             const div = document.createElement('div');
             div.className = 'input-group mb-2';
             div.innerHTML = `
-                <input type="text" class="form-control" name="anggota[]" placeholder="Nama anggota">
-                <input type="text" class="form-control" name="nrp_anggota[]" placeholder="NRP">
+                <input type="text" class="form-control" name="anggota[]" placeholder="Nama anggota" required>
+                <input type="number" class="form-control" name="nrp_anggota[]" placeholder="NRP" required>
                 <button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">
                     <i class="bi bi-trash"></i>
                 </button>
@@ -230,6 +284,49 @@
         document.addEventListener('DOMContentLoaded', function () {
             const val = document.getElementById('jenisSurat').value;
             if (val) showExtraFields(val);
-        });
+
+        // sher 
+    const form = document.getElementById('form-pengajuan');
+    const errorContainer = document.getElementById('anggota-error');
+    const errorText = document.getElementById('error-text');
+
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+        errorContainer.classList.add('d-none');
+        errorText.innerText = '';
+
+        const namaInputs = document.querySelectorAll('input[name="anggota[]"]');
+        const nrpInputs = document.querySelectorAll('input[name="nrp_anggota[]"]');
+
+        const namaValues = Array.from(namaInputs)
+            .filter(input => !input.disabled && input.value.trim() !== '')
+            .map(input => input.value.trim().toLowerCase());
+
+        const nrpValues = Array.from(nrpInputs)
+            .filter(input => !input.disabled && input.value.trim() !== '')
+            .map(input => input.value.trim());
+
+        const uniqueNama = new Set(namaValues);
+        const uniqueNrp = new Set(nrpValues);
+
+        let errorMessage = '';
+
+        if (uniqueNama.size !== namaValues.length) {
+            errorMessage = 'Terdapat nama anggota yang sama. Silakan periksa kembali.';
+        } else if (uniqueNrp.size !== nrpValues.length) {
+            errorMessage = 'Terdapat NRP anggota yang sama. Silakan periksa kembali.';
+        }
+
+        if (errorMessage !== '') {
+            e.preventDefault();
+            
+            errorText.innerText = errorMessage;
+            errorContainer.classList.remove('d-none');
+            
+            return;
+        }
+    });
+});
+// end sher
     </script>
-@endsection

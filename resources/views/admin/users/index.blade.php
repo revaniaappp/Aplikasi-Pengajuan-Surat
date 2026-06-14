@@ -53,9 +53,13 @@
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>NIM / NRP</th>
-                                <th>Role</th>
                                 <th>Program Studi</th>
+<<<<<<< HEAD
                                 <th>Aksi</th>
+=======
+                                <th>Role</th>
+                                <th>Action</th>
+>>>>>>> 607040252975b07aceda6462ed2e4b28bc5a6c6d
                             </tr>
                         </thead>
                         <tbody>
@@ -64,6 +68,7 @@
                                     <td class="fw-semibold">{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->nim_nik ?? '-' }}</td>
+                                    <td>{{ $user->prodi->nama ?? '-' }}</td>
                                     <td>
                                         @switch($user->role)
                                             @case('mahasiswa')
@@ -90,6 +95,7 @@
                                                 <span class="badge text-bg-light text-dark">{{ $user->role }}</span>
                                         @endswitch
                                     </td>
+<<<<<<< HEAD
                                     <td>{{ $user->prodi->nama ?? '-' }}</td>
                                     <td class="d-flex gap-1">
                                         <a href="{{ route('admin.users.edit', $user->id) }}"
@@ -104,6 +110,13 @@
                                                 Arsip
                                             </button>
                                         </form>
+=======
+                                    <td>
+                                        <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                class="btn btn-light btn-sm">
+                                                Edit
+                                        </a>
+>>>>>>> 607040252975b07aceda6462ed2e4b28bc5a6c6d
                                     </td>
                                 </tr>
                                 @empty

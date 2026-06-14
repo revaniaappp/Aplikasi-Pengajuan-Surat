@@ -103,7 +103,11 @@
                                         @case('keperluan') Keperluan @break
                                         @case('nama_mk') Nama Mata Kuliah @break
                                         @case('nama_perusahaan') Nama Perusahaan @break
-                                        @case('tanggal_lulus') Tanggal Lulus @break
+                                        @case('nama_penerima') Penerima Surat @break
+                                        @case('lokasi_perusahaan') Lokasi Perusahaan @break
+                                        @case('tujuan_surat') Tujuan Surat @break
+                                        {{-- @case('tanggal_lulus') Tanggal Lulus @break --}}
+                                        @case('tanggal_ambil') Fisik Dapat Diambil di TU per @break
                                         @default {{ ucfirst(str_replace('_', ' ', $detail->field_key)) }}
                                     @endswitch
                                 </td>
