@@ -1,0 +1,72 @@
+    <!-- navbar -->
+
+    <nav class="navbar admin-navbar navbar-expand bg-white">
+        <div class="container-fluid px-3 px-lg-4">
+            <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                aria-expanded="true" aria-label="Toggle sidebar">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
+                <input class="form-control search-input" type="search" placeholder="Search"
+                    aria-label="Search">
+            </form>
+
+            <div class="navbar-actions ms-auto">
+                <button class="icon-button theme-toggle" type="button" data-theme-toggle
+                    aria-label="Switch color theme" title="Switch color theme">
+                    <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
+                </button>
+                <div class="dropdown">
+                    <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                        aria-label="Notifications">
+                        <span class="notification-dot"></span>
+                        <i class="bi bi-bell" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-menu">
+                        <div class="dropdown-header fw-bold text-body">Notifications</div>
+                        <a class="dropdown-item" href="users.html">
+                            <span class="notification-title">New user registered</span>
+                            <span class="notification-time">4 minutes ago</span>
+                        </a>
+                        <a class="dropdown-item" href="charts.html">
+                            <span class="notification-title">Revenue target reached</span>
+                            <span class="notification-time">32 minutes ago</span>
+                        </a>
+                        <a class="dropdown-item" href="settings.html">
+                            <span class="notification-title">Security review completed</span>
+                            <span class="notification-time">1 hour ago</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle text-muted ms-2" data-bs-toggle="dropdown">
+                        <small>
+                            <i class="fa fa-user-circle me-2"></i>
+
+                            {{ Auth::user()->name }}
+
+                            <span class="badge bg-primary ms-1">
+
+                                @if (Auth::user()->role == 'admin')
+                                    Administrator
+                                @elseif(Auth::user()->role == 'mahasiswa')
+                                    Mahasiswa
+                                @elseif(Auth::user()->role == 'kaprodi')
+                                    Kaprodi
+                                @elseif(Auth::user()->role == 'manager')
+                                    Manager
+                                @elseif(Auth::user()->role == 'tata_usaha')
+                                    Tata Usaha
+                                @endif
+
+                            </span>
+                        </small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>

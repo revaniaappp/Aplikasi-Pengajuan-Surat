@@ -1,0 +1,1 @@
+SELECT * FROM tubes_pab02.letter_submissions;
