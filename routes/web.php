@@ -39,7 +39,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/submissions/create', [SubmissionController::class, 'create'])->name('submissions.create');
             Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
             Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
-            Route::delete('/submissions/{submission}', [SubmissionController::class, 'destroy'])->name('submissions.destroy');
             Route::get('/submissions/{submission}/download', [LetterController::class, 'download'])->name('submissions.download');
         });
 
