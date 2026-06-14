@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmissionController;
-use App\Http\Controllers\ApprovalController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -26,16 +24,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
         Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
         Route::delete('/submissions/{submission}', [SubmissionController::class, 'destroy'])->name('submissions.destroy');
-    });
-
-    // Kaprodi
-    Route::middleware(['auth', 'role:kaprodi'])->prefix('kaprodi')->name('kaprodi.')->group(function () {
-    Route::get('/approvals', [ApprovalController::class, 'index'])->name('approvals.index');
-    Route::get('/approvals/{submission}', [ApprovalController::class, 'show'])->name('approvals.show');
-    Route::patch('/approvals/{submission}/approve', [ApprovalController::class, 'approve'])->name('approvals.approve');
-    Route::patch('/approvals/{submission}/reject', [ApprovalController::class, 'reject'])->name('approvals.reject');
-
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     });
 
 });

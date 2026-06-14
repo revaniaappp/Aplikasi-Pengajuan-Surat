@@ -9,16 +9,8 @@
                 <span></span>
             </button>
 
-            <form
-                action="{{ url()->current() }}"
-                method="GET"
-                class="d-none d-md-flex ms-3 flex-grow-1">
-                <input
-                    class="form-control search-input"
-                    type="search"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="Cari..."
+            <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
+                <input class="form-control search-input" type="search" placeholder="Search"
                     aria-label="Search">
             </form>
 

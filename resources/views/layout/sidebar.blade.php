@@ -16,26 +16,26 @@
                 <span class="nav-text">Dashboard</span>
             </a>
 
-            {{-- mahasiswa dan elseif untuk kaprodi--}}
+            {{-- mahasiswa --}}
             @if (Auth::user()->role == 'mahasiswa')
-                <a class="nav-link" href="{{ route('mahasiswa.submissions.index') }}">
-                    <span class="nav-icon"><i class="bi bi-clock-history"></i></span>
+                <a class="nav-link" href="mahasiswa/submissions">
+                    <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
                     <span class="nav-text">Riwayat Pengajuan</span>
                 </a>
-                <a class="nav-link" href="{{ route('mahasiswa.submissions.create') }}">
-                    <span class="nav-icon"><i class="bi bi-file-earmark-plus"></i></span>
+
+                <a class="nav-link" href="mahasiswa/submissions/create">
+                    <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
                     <span class="nav-text">Form Pengajuan</span>
                 </a>
-            @elseif (Auth::user()->role == 'kaprodi')
-                <a class="nav-link" href="{{ route('kaprodi.approvals.index') }}">
-                    <span class="nav-icon"><i class="bi bi-file-earmark-check"></i></span>
-                    <span class="nav-text">Pengajuan Surat</span>
-                </a>
-                <a class="nav-link" href="{{ route('kaprodi.users.index') }}">
-                    <span class="nav-icon"><i class="bi bi-people"></i></span>
-                    <span class="nav-text">Daftar Pengguna</span>
-                </a>
             @endif
+            <a class="nav-link" href="admin/users">
+                <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
+                <span class="nav-text">Daftar Pengguna</span>
+            </a>
+            <a class="nav-link" href="/approvals">
+                <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
+                <span class="nav-text">Daftar Pengajuan Surat</span>
+            </a>
             <a class="nav-link" href="tables.html">
                 <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
                 <span class="nav-text">Tables</span>
