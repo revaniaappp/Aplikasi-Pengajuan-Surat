@@ -15,6 +15,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',        
+        'nim_nik',    
+        'prodi_id', 
     ];
 
     protected $hidden = [
@@ -28,5 +31,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function prodi()
+    {
+        return $this->belongsTo(\App\Models\ProgramStudi::class, 'prodi_id');
     }
 }

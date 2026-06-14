@@ -72,10 +72,14 @@
                                 </td>
                             </tr>
                             @if ($submission->status === 'rejected' && $submission->rejection_reason)
-                            <tr>
-                                <td class="text-muted">Alasan Penolakan</td>
-                                <td class="text-danger">{{ $submission->rejection_reason }}</td>
-                            </tr>
+                                <div class="alert alert-danger mt-3 mb-0">
+                                    <strong>
+                                        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                        Alasan Penolakan:
+                                    </strong>
+                                    <br>
+                                    {{ $submission->rejection_reason }}
+                                </div>
                             @endif
                         </table>
                     </div>
@@ -95,7 +99,6 @@
                             @foreach ($submission->details as $detail)
                             <tr>
                                 <td class="text-muted" style="width:40%">
-                                    {{-- Label yang lebih ramah --}}
                                     @switch($detail->field_key)
                                         @case('keperluan') Keperluan @break
                                         @case('nama_mk') Nama Mata Kuliah @break
@@ -112,7 +115,6 @@
                 </div>
                 @endif
 
-                {{-- Tombol download jika sudah available --}}
                 @if ($submission->status === 'available' && $submission->file)
                 <div class="panel">
                     <div class="panel-header">
