@@ -53,8 +53,9 @@
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>NIM / NRP</th>
-                                <th>Role</th>
                                 <th>Program Studi</th>
+                                <th>Role</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,6 +64,7 @@
                                     <td class="fw-semibold">{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->nim_nik ?? '-' }}</td>
+                                    <td>{{ $user->prodi->nama ?? '-' }}</td>
                                     <td>
                                         @switch($user->role)
                                             @case('mahasiswa')
@@ -89,7 +91,12 @@
                                                 <span class="badge text-bg-light text-dark">{{ $user->role }}</span>
                                         @endswitch
                                     </td>
-                                    <td>{{ $user->prodi->nama ?? '-' }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                class="btn btn-light btn-sm">
+                                                Edit
+                                        </a>
+                                    </td>
                                 </tr>
                                 @empty
                                     <tr>

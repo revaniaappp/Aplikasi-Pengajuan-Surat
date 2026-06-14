@@ -53,21 +53,34 @@
                     </div>
 
                     <div class="col-md-4">
-                        <select name="status" class="form-select">
-                            <option value="">Semua Status</option>
-                            <option value="pending"
-                                {{ request('status') == 'pending' ? 'selected' : '' }}>
+                        @php
+                            $currentStatus = request('status');
+                            
+                            // Jika tidak ada parameter status dan tidak sedang mencari, default ke 'pending'
+                            if (!request()->has('status') && !request()->filled('search')) {
+                                $currentStatus = 'pending';
+                            }
+                        @endphp
+                        @if(request('search'))
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                        @endif
+
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="all" {{ $currentStatus === 'all' ? 'selected' : '' }}>
+                                Semua Status
+                            </option>
+                            
+                            <option value="pending" {{ $currentStatus === 'pending' ? 'selected' : '' }}>
                                 Menunggu
                             </option>
-                            <option value="approved"
-                                {{ request('status') == 'approved' ? 'selected' : '' }}>
+                            
+                            <option value="approved" {{ $currentStatus === 'approved' ? 'selected' : '' }}>
                                 Disetujui
                             </option>
-                            <option value="rejected"
-                                {{ request('status') == 'rejected' ? 'selected' : '' }}>
+                            
+                            <option value="rejected" {{ $currentStatus === 'rejected' ? 'selected' : '' }}>
                                 Ditolak
                             </option>
-
                         </select>
                     </div>
 
@@ -100,7 +113,6 @@
                             <th>NIM</th>
                             <th>JENIS SURAT</th>
                             <th>STATUS</th>
-                            <th class="text-center">RINCIAN</th>
                             <th class="text-center">AKSI</th>
                         </tr>
                     </thead>
@@ -165,51 +177,15 @@
 
                                 </td>
 
-                                {{-- DETAIL --}}
-                                <td class="text-center">
-
-                                    <a href="{{ route('kaprodi.approvals.show', $item->id) }}"
-                                        class="btn btn-info btn-sm">
-
-                                        Detail
-
-                                    </a>
-
-                                </td>
-
                                 {{-- AKSI --}}
                                 <td class="text-center">
 
                                     @if($item->status === 'pending')
+                                        <a href="{{ route('kaprodi.approvals.show', $item->id) }}"
+                                            class="btn btn-light btn-sm">
+                                            Detail
+                                        </a>
 
-                                        {{-- SETUJUI --}}
-                                        <form
-                                            action="{{ route('kaprodi.approvals.approve', $item->id) }}"
-                                            method="POST"
-                                            class="d-inline">
-
-                                            @csrf
-                                            @method('PATCH')
-
-                                            <button
-                                                type="submit"
-                                                class="btn btn-success btn-sm"
-                                                onclick="return confirm('Setujui pengajuan ini?')">
-
-                                                Setujui
-
-                                            </button>
-
-                                        </form>
-
-                                        {{-- TOLAK --}}
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger btn-sm"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#rejectModal{{ $item->id }}">
-                                            Tolak
-                                        </button>
                                         <div class="modal fade"
                                             id="rejectModal{{ $item->id }}"
                                             tabindex="-1">
@@ -281,6 +257,11 @@
                         @endforelse
                     </tbody>
                 </table>
+                @if ($submissions->hasPages())
+                <div class="card-footer border-top px-4 py-3">
+                    {{ $submissions->withQueryString()->links('pagination::bootstrap-5') }}
+                </div>
+                @endif
             </div>
         </section>
     </div>
