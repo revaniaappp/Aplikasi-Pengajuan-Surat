@@ -17,6 +17,7 @@ class LetterSubmission extends Model
         'rejection_reason',
         'reviewed_by',
         'reviewed_at',
+        'is_read',
     ];
 
     public function letterType()
