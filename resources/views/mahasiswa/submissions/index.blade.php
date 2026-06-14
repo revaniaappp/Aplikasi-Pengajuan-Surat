@@ -1,7 +1,6 @@
 @extends('layout.master')
 
 @section('contents')
-
     <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
 
@@ -38,10 +37,10 @@
                             class="btn btn-sm {{ request('status') === 'pending' ? 'btn-warning' : 'btn-light' }}">
                             Menunggu
                         </a>
-                        <a href="{{ route('mahasiswa.submissions.index', ['status' => 'approved']) }}"
+                        {{-- <a href="{{ route('mahasiswa.submissions.index', ['status' => 'approved']) }}"
                             class="btn btn-sm {{ request('status') === 'approved' ? 'btn-success' : 'btn-light' }}">
                             Disetujui
-                        </a>
+                        </a> --}}
                         <a href="{{ route('mahasiswa.submissions.index', ['status' => 'available']) }}"
                             class="btn btn-sm {{ request('status') === 'available' ? 'btn-primary' : 'btn-light' }}">
                             Tersedia
@@ -101,9 +100,11 @@
                                                 class="btn btn-light btn-sm">
                                                 Detail
                                             </a>
+
                                             @if ($item->status === 'available')
-                                                <a href="#" class="btn btn-primary btn-sm">
-                                                    <i class="bi bi-download" aria-hidden="true"></i> Unduh
+                                                <a href="{{ route('mahasiswa.submissions.download', $item) }}"
+                                                    class="btn btn-sm btn-success">
+                                                    <i class="bi bi-download"></i> Download
                                                 </a>
                                             @endif
                                         </div>

@@ -9,11 +9,23 @@
                 <span></span>
             </button>
 
-            <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
-                <input class="form-control search-input" type="search" placeholder="Search"
-                    aria-label="Search">
-            </form>
+            @php
+                if (Auth::user()->role == 'mahasiswa') {
+                    $searchAction = route('mahasiswa.submissions.index');
+                    $searchPlaceholder = 'Cari pengajuan...';
+                } elseif (Auth::user()->role == 'kaprodi') {
+                    $searchAction = route('kaprodi.approvals.index');
+                    $searchPlaceholder = 'Cari pengajuan mahasiswa...';
+                } else {
+                    $searchAction = route('manager.letters.index');
+                    $searchPlaceholder = 'Cari surat...';
+                }
+            @endphp
 
+            <form action="{{ $searchAction }}" method="GET" class="d-none d-md-flex ms-3 flex-grow-1">
+                <input class="form-control search-input" type="search" name="search" value="{{ request('search') }}"
+                    placeholder="{{ $searchPlaceholder }}" aria-label="Search">
+            </form>
             <div class="navbar-actions ms-auto">
                 <button class="icon-button theme-toggle" type="button" data-theme-toggle
                     aria-label="Switch color theme" title="Switch color theme">
@@ -46,11 +58,8 @@
                     <a href="#" class="dropdown-toggle text-muted ms-2" data-bs-toggle="dropdown">
                         <small>
                             <i class="fa fa-user-circle me-2"></i>
-
                             {{ Auth::user()->name }}
-
                             <span class="badge bg-primary ms-1">
-
                                 @if (Auth::user()->role == 'admin')
                                     Administrator
                                 @elseif(Auth::user()->role == 'mahasiswa')
@@ -62,10 +71,27 @@
                                 @elseif(Auth::user()->role == 'tata_usaha')
                                     Tata Usaha
                                 @endif
-
                             </span>
                         </small>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-person me-2"></i> Profil
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

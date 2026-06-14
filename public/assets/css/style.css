@@ -45,6 +45,9 @@ a {
 }
 
 .admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   position: fixed;
   inset: 0 auto 0 0;
   z-index: 1040;
@@ -126,7 +129,9 @@ a {
 }
 
 .sidebar-nav {
+  flex: 1;
   display: grid;
+  align-content: start;
   gap: 0.45rem;
   padding: 1.1rem 1rem;
 }
@@ -166,30 +171,33 @@ a {
 }
 
 .sidebar-footer {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: auto;
-  margin-inline: 1.25rem;
-  padding: 1rem 0;
-  color: #d1d5db;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.9rem;
-  white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-inline: 1.25rem;
+    padding: 1rem 0;
+    color: #d1d5db;
+    border-top: 1px solid rgba(255,255,255,.08);
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .sidebar-user {
-  margin: auto 1rem 1rem;
-  padding: 0.85rem;
-  display: grid;
-  justify-items: center;
-  gap: 0.22rem;
-  border: 1px solid var(--admin-sidebar-border);
-  border-radius: 8px;
-  background: var(--admin-sidebar-soft);
-  text-align: center;
+    margin: 1rem;
+    padding: 0.85rem;
+    display: grid;
+    justify-items: center;
+    gap: 0.22rem;
+    border: 1px solid var(--admin-sidebar-border);
+    border-radius: 8px;
+    background: var(--admin-sidebar-soft);
+    text-align: center;
 }
-
+.sidebar-user-icon {
+    font-size: 3rem;
+    color: #53e9b9;
+    line-height: 1;
+}
 .sidebar-user-avatar {
   border: 3px solid #53e9b9;
 }
@@ -408,7 +416,7 @@ html[data-theme="dark"] .profile-button .avatar-sm {
   min-height: calc(100vh - 132px);
 }
 
-.dashboard-content > .container-fluid {
+.dashboard-content>.container-fluid {
   padding-top: 1.75rem !important;
   padding-bottom: 1.75rem !important;
 }
@@ -1013,6 +1021,37 @@ html[data-theme="dark"] .profile-button .avatar-sm {
     overflow: hidden;
   }
 
+  .sidebar-mini .brand-copy {
+    display: none;
+}
+
+/* Sembunyikan subtitle saat sidebar mini */
+.sidebar-mini .brand-subtitle {
+    display: none;
+}
+
+/* Rapikan brand icon saat mini */
+.sidebar-mini .brand-mark {
+    justify-content: center;
+    padding: 0;
+}
+
+/* Rapikan sidebar-user saat mini */
+.sidebar-mini .sidebar-user strong,
+.sidebar-mini .sidebar-user small {
+    display: none;
+}
+
+.sidebar-mini .sidebar-user {
+    justify-content: center;
+}
+
+/* Sembunyikan footer text saat mini */
+.sidebar-mini .sidebar-footer-text,
+.sidebar-mini .status-dot {
+    display: none;
+}
+
   body.sidebar-mini .sidebar-header,
   body.sidebar-mini .sidebar-footer {
     margin-inline: 1rem;
@@ -1054,6 +1093,7 @@ html[data-theme="dark"] .profile-button .avatar-sm {
 }
 
 @media (max-width: 575.98px) {
+
   .page-heading,
   .panel-header {
     align-items: flex-start;
@@ -1091,6 +1131,7 @@ html[data-theme="dark"] .profile-button .avatar-sm {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .sidebar-nav .nav-link,
   .sidebar-toggle,
   .icon-button,
@@ -1469,7 +1510,7 @@ html[data-theme="dark"] .text-bg-danger {
 }
 
 @media (max-width: 991.98px) {
-  .dashboard-content > .container-fluid {
+  .dashboard-content>.container-fluid {
     padding-top: 1.25rem !important;
     padding-bottom: 1.25rem !important;
   }
@@ -1484,7 +1525,7 @@ html[data-theme="dark"] .text-bg-danger {
     align-items: flex-start;
   }
 
-  .panel-header > .d-flex {
+  .panel-header>.d-flex {
     width: 100%;
   }
 

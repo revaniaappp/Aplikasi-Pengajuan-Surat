@@ -10,14 +10,19 @@ class SubmissionController extends Controller
 {
     public function index(Request $request)
     {
-        $query = LetterSubmission::with(['letterType', 'prodi'])
-            ->where('student_id', auth()->id());
+        $query = LetterSubmission::where('student_id', auth()->id());
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        if ($request->search) {
+            $keyword = $request->search;
+            $query->where(function ($q) use ($keyword) {
+                $q->where('submission_number', 'like', '%'.$keyword.'%')
+                    ->orWhereHas('letterType', function ($q) use ($keyword) {
+                        $q->where('name', 'like', '%'.$keyword.'%');
+                    });
+            });
         }
 
-        $submissions = $query->get();
+        $submissions = $query->latest()->paginate(15);
 
         return view('mahasiswa.submissions.index', compact('submissions'));
     }
@@ -105,12 +110,5 @@ class SubmissionController extends Controller
         $submission->load(['letterType', 'prodi', 'details', 'file']);
 
         return view('mahasiswa.submissions.show', compact('submission'));
-    }
-
-    public function destroy(LetterSubmission $submission)
-    {
-        $submission->delete();
-
-        return redirect()->route('mahasiswa.submissions.index')->with('success', 'Pengajuan berhasil dihapus.');
     }
 }

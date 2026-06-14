@@ -3,22 +3,21 @@
 @section('title', 'Daftar Pengguna')
 
 @section('contents')
-
     <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
 
             <div class="page-heading">
                 <div class="page-heading-copy">
-                    <span class="page-icon"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
+                    <span class="page-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
                     <div>
-                        <p class="eyebrow mb-1">Admin</p>
+                        <p class="eyebrow mb-1">Administrator</p>
                         <h1 class="h3 mb-1">Daftar Pengguna</h1>
                     </div>
                 </div>
-                {{-- <div class="heading-actions">
+                <div class="heading-actions">
                     <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">
-                        <i class="bi bi-file-earmark-plus" aria-hidden="true"></i> Tambahkan User
-                    </a> --}}
+                        <i class="bi bi-person-plus" aria-hidden="true"></i> Tambah Pengguna
+                    </a>
                 </div>
             </div>
 
@@ -26,17 +25,24 @@
                 <div class="panel-header">
                     <div>
                         <h2 class="h5 mb-1 section-title">
-                            <i class="bi bi-clock-history" aria-hidden="true"></i>
-                            <span>Semua Pengguna</span>
+                            <i class="bi bi-people" aria-hidden="true"></i>
+                            <span>Pengguna Program Studi</span>
                         </h2>
                     </div>
-
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-primary">Mahasiswa</a>
-                        <a href="#" class="btn btn-sm btn-light">Kaprodi</a>
-                        <a href="#" class="btn btn-sm btn-light">Manajer</a>
-                        <a href="#" class="btn btn-sm btn-light">Admin</a>
-                        <a href="#" class="btn btn-sm btn-light">TU</a>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{{ route('admin.users.index') }}"
+                            class="btn btn-sm {{ !request('role') ? 'btn-primary' : 'btn-light' }}">Semua</a>
+                        <a href="{{ route('admin.users.index', ['role' => 'mahasiswa']) }}"
+                            class="btn btn-sm {{ request('role') === 'mahasiswa' ? 'btn-primary' : 'btn-light' }}">Mahasiswa</a>
+                        <a href="{{ route('admin.users.index', ['role' => 'kaprodi']) }}"
+                            class="btn btn-sm {{ request('role') === 'kaprodi' ? 'btn-primary' : 'btn-light' }}">Kaprodi</a>
+                        <a href="{{ route('admin.users.index', ['role' => 'tata_usaha']) }}"
+                            class="btn btn-sm {{ request('role') === 'tata_usaha' ? 'btn-primary' : 'btn-light' }}">Tata
+                            Usaha</a>
+                        <a href="{{ route('admin.users.index', ['role' => 'manager']) }}"
+                            class="btn btn-sm {{ request('role') === 'manager' ? 'btn-primary' : 'btn-light' }}">Manager</a>
+                        <a href="{{ route('admin.users.index', ['role' => 'admin']) }}"
+                            class="btn btn-sm {{ request('role') === 'admin' ? 'btn-primary' : 'btn-light' }}">Admin</a>
                     </div>
                 </div>
 
@@ -44,19 +50,59 @@
                     <table class="table align-middle mb-0">
                         <thead>
                             <tr>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">NIM/NRP</th>
-                                <th scope="col">Prodi</th>
-                                <th scope="col" class="text-end">Aksi</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>NIM / NRP</th>
+                                <th>Role</th>
+                                <th>Program Studi</th>
                             </tr>
                         </thead>
-                        
-                    </table>
-                </div>
+                        <tbody>
+                            @forelse($users as $user)
+                                <tr>
+                                    <td class="fw-semibold">{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->nim_nik ?? '-' }}</td>
+                                    <td>
+                                        @switch($user->role)
+                                            @case('mahasiswa')
+                                                <span class="badge text-bg-primary">Mahasiswa</span>
+                                            @break
 
-            </section>
-        </div>
-    </main>
-@endsection
+                                            @case('kaprodi')
+                                                <span class="badge text-bg-success">Kaprodi</span>
+                                            @break
+
+                                            @case('tu')
+                                                <span class="badge text-bg-secondary">TU</span>
+                                            @break
+
+                                            @case('manager')
+                                                <span class="badge text-bg-warning">Manager</span>
+                                            @break
+
+                                            @case('admin')
+                                                <span class="badge text-bg-danger">Admin</span>
+                                            @break
+
+                                            @default
+                                                <span class="badge text-bg-light text-dark">{{ $user->role }}</span>
+                                        @endswitch
+                                    </td>
+                                    <td>{{ $user->prodi->nama ?? '-' }}</td>
+                                </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-5">
+                                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                                            Tidak ada pengguna ditemukan.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    @endsection
