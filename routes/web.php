@@ -65,6 +65,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/{submission}/preview', [LetterController::class, 'preview'])->name('preview');
             Route::get('/{submission}/download', [LetterController::class, 'download'])->name('download');
             Route::post('/{submission}/generate', [LetterController::class, 'generateAndSave'])->name('generate');
+
+            //StaffPlacement 
+            Route::get('/staff_placements', [StaffPlacementController::class, 'index'])->name('staff_placements.index');
+            Route::get('/staff_placements/create', [StaffPlacementController::class, 'create'])->name('staff_placements.create');
+            Route::post('/staff_placements', [StaffPlacementController::class, 'store'])->name('staff_placements.store');
+            Route::get('/staff_placements/{staffPlacement}/edit', [StaffPlacementController::class, 'edit'])->name('staff_placements.edit');
+            Route::patch('/staff_placements/{staffPlacement}', [StaffPlacementController::class, 'update'])->name('staff_placements.update');
+            Route::delete('/staff_placements/{staffPlacement}', [StaffPlacementController::class, 'destroy'])->name('staff_placements.destroy');
         });
 
     // ADMIN
