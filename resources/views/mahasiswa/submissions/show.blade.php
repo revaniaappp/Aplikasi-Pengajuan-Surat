@@ -72,10 +72,14 @@
                                 </td>
                             </tr>
                             @if ($submission->status === 'rejected' && $submission->rejection_reason)
-                            <tr>
-                                <td class="text-muted">Alasan Penolakan</td>
-                                <td class="text-danger">{{ $submission->rejection_reason }}</td>
-                            </tr>
+                                <div class="alert alert-danger mt-3 mb-0">
+                                    <strong>
+                                        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                        Alasan Penolakan:
+                                    </strong>
+                                    <br>
+                                    {{ $submission->rejection_reason }}
+                                </div>
                             @endif
                         </table>
                     </div>
