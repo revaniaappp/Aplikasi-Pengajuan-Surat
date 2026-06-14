@@ -22,6 +22,10 @@ class SubmissionController extends Controller
             });
         }
 
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
         $submissions = $query->latest()->paginate(15);
 
         return view('mahasiswa.submissions.index', compact('submissions'));
@@ -41,7 +45,18 @@ class SubmissionController extends Controller
             'keperluan' => 'nullable|string|max:255',
             'nama_mk' => 'nullable|string|max:150',
             'nama_perusahaan' => 'nullable|string|max:150',
-            'tanggal_lulus' => 'nullable|date',
+            // 'tanggal_lulus' => 'nullable|date',
+            'nama_penerima' => 'nullable|string|max:150',
+            'lokasi_perusahaan' => 'nullable|string|max:150',
+            'tujuan_surat' => 'nullable|string|max:255',
+
+            'anggota' => 'nullable|array',
+            'anggota.*' => 'required_with:anggota|string|distinct',
+            'nrp_anggota' => 'nullable|array',
+            'nrp_anggota.*' => 'required_with:nrp_anggota|numeric|distinct',
+        ], [
+            'anggota.*.distinct' => 'Nama anggota tidak boleh ada yang sama.',
+            'nrp_anggota.*.distinct' => 'NRP tidak boleh ada yang sama.',
         ]);
 
         // Simpan submission utama
@@ -75,12 +90,33 @@ class SubmissionController extends Controller
             ]);
         }
 
-        if ($request->filled('tanggal_lulus')) {
+        if ($request->filled('nama_penerima')) {
             $submission->details()->create([
-                'field_key' => 'tanggal_lulus',
-                'field_value' => $request->tanggal_lulus,
+                'field_key' => 'nama_penerima',
+                'field_value' => $request->nama_penerima,
             ]);
         }
+
+        if ($request->filled('lokasi_perusahaan')) {
+            $submission->details()->create([
+                'field_key' => 'lokasi_perusahaan',
+                'field_value' => $request->lokasi_perusahaan,
+            ]);
+        }
+
+        if ($request->filled('tujuan_surat')) {
+            $submission->details()->create([
+                'field_key' => 'tujuan_surat',
+                'field_value' => $request->tujuan_surat,
+            ]);
+        }
+
+        // if ($request->filled('tanggal_lulus')) {
+        //     $submission->details()->create([
+        //         'field_key' => 'tanggal_lulus',
+        //         'field_value' => $request->tanggal_lulus,
+        //     ]);
+        // }
 
         // Simpan anggota kelompok
         if ($request->anggota) {
