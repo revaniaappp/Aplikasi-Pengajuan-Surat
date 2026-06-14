@@ -85,8 +85,8 @@
                                 <tr>
                                     <td class="fw-semibold">{{ $item->submission_number }}</td>
                                     <td>
-                                        <p class="fw-semibold mb-0">{{ $item->student->name }}</p>
-                                        <p class="text-muted small mb-0">{{ $item->student->nim_nik }}</p>
+                                        <p class="fw-semibold mb-0">{{ $item->student?->name }}</p>
+                                        <p class="text-muted small mb-0">{{ $item->student?->nim_nik }}</p>
                                     </td>
                                     <td>{{ $item->letterType->name }}</td>
                                     <td>{{ $item->prodi->nama }}</td>

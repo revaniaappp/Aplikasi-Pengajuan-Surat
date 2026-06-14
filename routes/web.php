@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
             Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
             Route::get('/submissions/{submission}/download', [LetterController::class, 'download'])->name('submissions.download');
+            Route::delete('/submissions/{submission}', [SubmissionController::class, 'destroy'])->name('submissions.destroy');
         });
 
     // KAPRODI
@@ -79,6 +80,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
             Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
             Route::post('/users/{user}/archive', [UserController::class, 'archive'])->name('users.archive');
+            Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
             Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
             // Prodi

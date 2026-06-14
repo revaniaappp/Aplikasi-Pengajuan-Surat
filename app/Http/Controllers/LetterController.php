@@ -15,7 +15,10 @@ class LetterController extends Controller
     public function index(Request $request)
     {
         $query = LetterSubmission::with(['letterType', 'prodi', 'student'])
-            ->whereIn('status', ['approved', 'available']);
+            ->whereIn('status', ['approved', 'available'])
+            ->whereHas('student', function ($q) {
+                $q->whereNull('deleted_at');
+            });
 
         // Filter per prodi kalau TU punya prodi_id
         if (auth()->user()->prodi_id) {

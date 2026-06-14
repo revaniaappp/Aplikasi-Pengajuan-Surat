@@ -15,7 +15,10 @@ class ApprovalController extends Controller
             'student',
             'letterType',
             'prodi',
-        ])->where('prodi_id', Auth::user()->prodi_id);
+        ])->where('prodi_id', Auth::user()->prodi_id)
+        ->whereHas('student', function ($q) {
+            $q->whereNull('deleted_at');
+        });
 
         // Filter status
         $statusFilter = $request->status;
