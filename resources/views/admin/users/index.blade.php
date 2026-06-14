@@ -55,6 +55,7 @@
                                 <th>NIM / NRP</th>
                                 <th>Role</th>
                                 <th>Program Studi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,6 +91,20 @@
                                         @endswitch
                                     </td>
                                     <td>{{ $user->prodi->nama ?? '-' }}</td>
+                                    <td class="d-flex gap-1">
+                                        <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                class="btn btn-light btn-sm">
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('admin.users.archive', $user->id) }}" method="POST"
+                                            onsubmit="return confirm('Arsipkan pengguna ini?')">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-warning btn-sm">
+                                                Arsip
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @empty
                                     <tr>

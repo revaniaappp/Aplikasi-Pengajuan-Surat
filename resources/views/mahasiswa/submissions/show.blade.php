@@ -131,11 +131,10 @@
                                 Diupload {{ \Carbon\Carbon::parse($submission->file->uploaded_at)->format('d M Y, H:i') }}
                             </p>
                         </div>
-                        <a href="{{ asset('storage/' . $submission->file->file_path) }}"
-                           class="btn btn-primary"
-                           target="_blank">
-                            <i class="bi bi-download" aria-hidden="true"></i> Unduh
-                        </a>
+                        <a href="{{ route('mahasiswa.submissions.download', $submission) }}"
+                            class="btn btn-primary">
+                                <i class="bi bi-download" aria-hidden="true"></i> Unduh
+                            </a>
                     </div>
                 </div>
                 @endif

@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/users', [UserController::class, 'store'])->name('users.store');
             Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
             Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+            Route::post('/users/{user}/archive', [UserController::class, 'archive'])->name('users.archive');
             Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
             // Prodi
