@@ -18,8 +18,13 @@ class ApprovalController extends Controller
         ])->where('prodi_id', Auth::user()->prodi_id);
 
         // Filter status
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        $statusFilter = $request->status;
+
+        if (!$request->has('status') && !$request->filled('search')) {
+            $statusFilter = 'pending';
+        }
+        if (!empty($statusFilter) ) {
+            $query->where('status', $statusFilter);
         }
 
         // Filter jenis surat
@@ -52,7 +57,7 @@ class ApprovalController extends Controller
             });
         }
 
-        $submissions = $query->latest()->get();
+        $submissions = $query->latest()->paginate(10);
 
         $letterTypes = LetterType::all();
 
@@ -69,6 +74,10 @@ class ApprovalController extends Controller
         }
 
         $submission->load(['student', 'letterType', 'prodi', 'details']);
+
+        if (!$submission->is_read) {
+        $submission->update(['is_read' => true]);
+        }
 
         return view('kaprodi.approvals.show', compact('submission'));
     }
