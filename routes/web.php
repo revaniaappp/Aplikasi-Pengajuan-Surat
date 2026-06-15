@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
             Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
             Route::get('/submissions/{submission}/download', [LetterController::class, 'download'])->name('submissions.download');
+            Route::delete('/submissions/{submission}', [SubmissionController::class, 'destroy'])->name('submissions.destroy');
         });
 
     // KAPRODI
@@ -64,6 +65,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/{submission}/preview', [LetterController::class, 'preview'])->name('preview');
             Route::get('/{submission}/download', [LetterController::class, 'download'])->name('download');
             Route::post('/{submission}/generate', [LetterController::class, 'generateAndSave'])->name('generate');
+
+            //StaffPlacement 
+            Route::get('/staff_placements', [StaffPlacementController::class, 'index'])->name('staff_placements.index');
+            Route::get('/staff_placements/create', [StaffPlacementController::class, 'create'])->name('staff_placements.create');
+            Route::post('/staff_placements', [StaffPlacementController::class, 'store'])->name('staff_placements.store');
+            Route::get('/staff_placements/{staffPlacement}/edit', [StaffPlacementController::class, 'edit'])->name('staff_placements.edit');
+            Route::patch('/staff_placements/{staffPlacement}', [StaffPlacementController::class, 'update'])->name('staff_placements.update');
+            Route::delete('/staff_placements/{staffPlacement}', [StaffPlacementController::class, 'destroy'])->name('staff_placements.destroy');
         });
 
     // ADMIN
@@ -79,6 +88,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
             Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
             Route::post('/users/{user}/archive', [UserController::class, 'archive'])->name('users.archive');
+            Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
             Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
             // Prodi

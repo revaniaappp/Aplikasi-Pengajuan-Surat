@@ -147,4 +147,21 @@ class SubmissionController extends Controller
 
         return view('mahasiswa.submissions.show', compact('submission'));
     }
+
+    public function destroy(LetterSubmission $submission)
+    {
+        if ($submission->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if ($submission->status !== 'pending') {
+            return redirect()->route('mahasiswa.submissions.index')
+                ->with('error', 'Pengajuan yang sudah diproses tidak dapat dihapus.');
+        }
+
+        $submission->delete();
+
+        return redirect()->route('mahasiswa.submissions.index')
+            ->with('success', 'Pengajuan berhasil dihapus.');
+    }
 }

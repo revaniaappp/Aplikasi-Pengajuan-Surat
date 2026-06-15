@@ -10,8 +10,11 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        // Admin lihat semua user, tidak filter prodi
-        $query = User::with('prodi');
+        if ($request->filter === 'archived') {
+            $query = User::onlyTrashed()->with('prodi');
+        } else {
+            $query = User::with('prodi');
+        }
 
         if ($request->filled('role')) {
             $query->where('role', $request->role);
@@ -24,24 +27,48 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = User::findOrFail($id); 
+        // withTrashed supaya user archived tetap bisa diedit
+        $user = User::withTrashed()->findOrFail($id);
         $prodis = ProgramStudi::all();
-        
+
         return view('admin.users.edit', compact('user', 'prodis'));
     }
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        
+        $user = User::withTrashed()->findOrFail($id);
+
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'  => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required',
+            'role'  => 'required',
         ]);
 
-        $user->update($request->all());
+        $user->update($request->only(['name', 'email', 'role', 'nim_nik', 'prodi_id']));
 
-        return redirect()->route('admin.users.index')->with('success', 'Data pengguna berhasil diperbarui');
+        return redirect()->route('admin.users.index')->with('success', 'Data pengguna berhasil diperbarui.');
+    }
+
+    public function archive($id)
+    {
+        if (auth()->id() == $id) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Tidak bisa mengarsipkan akun sendiri.');
+        }
+
+        $user = User::findOrFail($id);
+        $user->delete(); // soft delete
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Pengguna berhasil diarsipkan.');
+    }
+
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->route('admin.users.index', ['filter' => 'archived'])
+            ->with('success', 'Pengguna berhasil dipulihkan.');
     }
 }
