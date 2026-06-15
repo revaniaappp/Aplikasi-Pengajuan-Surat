@@ -41,8 +41,11 @@ class DashboardController extends Controller
                 'approved' => $submissions->whereIn('status', ['approved', 'available'])->count(),
                 'rejected' => $submissions->where('status', 'rejected')->count(),
             ];
+            
 
-            $recent = LetterSubmission::with(['student', 'letterType'])
+            $recent = LetterSubmission::has('student')
+                ->with(['student', 'letterType'])
+                ->where('prodi_id', $user->prodi_id)
                 ->where('is_read', false)
                 ->latest();
             $unreadCount = $recent->count();
